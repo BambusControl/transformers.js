@@ -32,7 +32,7 @@
     "docs-api": "node ./docs/scripts/generate.js",
     "docs-preview": "doc-builder preview transformers.js ./docs/source/ --not_python_module",
     "docs-build": "doc-builder build transformers.js ./docs/source/ --not_python_module --build_dir ./docs/build/",
-    "preinstall": "webpack && npm run typegen"
+    "preinstall": "npm i & npm run build"
   },
   "repository": {
     "type": "git",
