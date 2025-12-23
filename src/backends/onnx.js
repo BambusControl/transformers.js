@@ -11,7 +11,7 @@
  */
 
 import { env, apis } from '../env.js';
-import * as ONNX_WEB from 'onnxruntime-web';
+import * as ONNX from 'onnxruntime-web';
 export { Tensor } from 'onnxruntime-common';
 
 /**
@@ -42,28 +42,18 @@ const supportedDevices = [];
 
 /** @type {ONNXExecutionProviders[]} */
 let defaultDevices;
-let ONNX;
-const ORT_SYMBOL = Symbol.for('onnxruntime');
 
-if (ORT_SYMBOL in globalThis) {
-    // If the JS runtime exposes their own ONNX runtime, use it
-    ONNX = globalThis[ORT_SYMBOL];
-
-} else {
-    ONNX = ONNX_WEB;
-
-    if (apis.IS_WEBNN_AVAILABLE) {
-        // TODO: Only push supported providers (depending on available hardware)
-        supportedDevices.push('webnn-npu', 'webnn-gpu', 'webnn-cpu', 'webnn');
-    }
-
-    if (apis.IS_WEBGPU_AVAILABLE) {
-        supportedDevices.push('webgpu');
-    }
-
-    supportedDevices.push('wasm');
-    defaultDevices = ['wasm'];
+if (apis.IS_WEBNN_AVAILABLE) {
+    // TODO: Only push supported providers (depending on available hardware)
+    supportedDevices.push('webnn-npu', 'webnn-gpu', 'webnn-cpu', 'webnn');
 }
+
+if (apis.IS_WEBGPU_AVAILABLE) {
+    supportedDevices.push('webgpu');
+}
+
+supportedDevices.push('wasm');
+defaultDevices = ['wasm'];
 
 // @ts-ignore
 const InferenceSession = ONNX.InferenceSession;
